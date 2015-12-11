@@ -24,6 +24,7 @@ set hlsearch
 set nowrap
 set laststatus=2
 set cmdheight=2
+set encoding=utf-8
 
 "Pathogen
 execute pathogen#infect()
@@ -31,7 +32,7 @@ execute pathogen#infect()
 " NerdTree
 let g:nerdtree_tabs_open_on_console_startup=1
 map <F2> :NERDTreeToggle<CR>
-let NERDTreeDirArrows=0
+let g:NERDTreeDirArrows=0
 
 " astyle AutoFormat
 map <F3> :%!astyle -s2<CR>
