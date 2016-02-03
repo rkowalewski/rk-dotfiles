@@ -51,3 +51,9 @@ let g:syntastic_check_on_wq = 0
 set background=dark
 colorscheme solarized
 
+" spell
+set spell spelllang=en_us
+
+" ================== Mouse works inside VIM ==============
+set mouse=a
+
