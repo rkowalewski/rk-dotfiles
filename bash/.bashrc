@@ -1,4 +1,3 @@
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -56,11 +55,14 @@ if [ "$PS1" ]; then
 # Prompt ------------------------------------------------------------------
 
   # enable color support of ls and also add handy aliases
-  alias ll='ls -alGh'
-  alias la='ls -a --color=auto --format=long'
-  alias l='ls -CF'
   alias ..='cd ..'
   alias p='pwd'
+  alias dir='ls --color=auto --format=vertical'
+  alias vdir='ls --color=auto --format=long'
+  alias l='ls -CF'
+  alias vl='ls --color=auto --format=long'
+  alias ll='ls -alGh --color=auto --format=long'
+  alias la='ls -lash --color=auto --format=long'
 
   alias psa='pstree -aAl'
 
@@ -159,12 +161,6 @@ if [ "$PS1" ]; then
                  "$([ $? = 0 ] && echo terminal || echo error)" \
                  "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-  # enable color support of ls and also add handy aliases
-  alias dir='ls --color=auto --format=vertical'
-  alias vdir='ls --color=auto --format=long'
-  alias vl='ls --color=auto --format=long'
-  alias ll='ls -lsh --color=auto --format=long'
-  alias la='ls -lash --color=auto --format=long'
 
   alias psa='pstree -aAl | vim -'
 
