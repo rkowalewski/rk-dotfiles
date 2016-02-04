@@ -56,7 +56,7 @@ if [ "$PS1" ]; then
 # Prompt ------------------------------------------------------------------
 
   # enable color support of ls and also add handy aliases
-  alias ll='ls --color=auto --format=long'
+  alias ll='ls -alGh'
   alias la='ls -a --color=auto --format=long'
   alias l='ls -CF'
   alias ..='cd ..'
