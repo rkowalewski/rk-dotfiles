@@ -172,4 +172,13 @@ if [ "$PS1" ]; then
   alias Gs='git status'
   alias Gb='git branch'
   alias Gi='git remote -v && echo "===" && git branch && echo "===" && git status'
+
+
+  # Load MPICC and GCC
+  mpicc --version > /dev/null 2>&1
+  if [[ $? -ne 0 ]];
+  then
+    module load mpich
+  fi
+  module load gcc
 fi

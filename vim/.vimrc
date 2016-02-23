@@ -54,6 +54,12 @@ colorscheme solarized
 " spell
 set spell spelllang=en_us
 
+"Gutentags
+:call pathogen#helptags() 
+set statusline+=%{gutentags#statusline()}
+
 " ================== Mouse works inside VIM ==============
 set mouse=a
 
+"====== Custom Mappings ====================
+nnoremap ü <C-]>
