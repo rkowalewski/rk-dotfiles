@@ -43,14 +43,10 @@ if [ "$PS1" ]; then
   # make less more friendly for non-text input files, see lesspipe(1)
   [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-  export CLASSPATH=/usr/share/java/servlet-2.3.jar:$CLASSPATH
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/:/usr/local/lib/
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/mpich-3.1/lib/
-  export INCLUDE_PATH=$INCLUDE_PATH:/usr/include/postgresql:/usr/local/include/:/usr/include/
-  export PATH=~/bin:~/opt/bin:$PATH
-  export HOSTALIASES=~/.hosts
-  export MKLROOT=/opt/intel/composer_xe_2013_sp1.2.144/mkl/
-  export INTELROOT=/opt/intel/
+  if [ -f .bashrc.local ]; then
+    source .bashrc.local
+  fi
+
 
 # Prompt ------------------------------------------------------------------
 
