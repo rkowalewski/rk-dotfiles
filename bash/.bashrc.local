@@ -6,3 +6,11 @@ export PATH=~/bin:~/opt/bin:$PATH
 export HOSTALIASES=~/.hosts
 export MKLROOT=/opt/intel/composer_xe_2013_sp1.2.144/mkl/
 export INTELROOT=/opt/intel/
+
+
+# Load MPICC and GCC
+mpicc --version > /dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+  module load mpich
+fi
+module load gcc
