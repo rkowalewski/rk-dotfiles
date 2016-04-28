@@ -43,9 +43,6 @@ if [ "$PS1" ]; then
   # make less more friendly for non-text input files, see lesspipe(1)
   [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-  if [ -f .bashrc.local ]; then
-    source .bashrc.local
-  fi
 
 
 # Prompt ------------------------------------------------------------------
@@ -169,4 +166,14 @@ if [ "$PS1" ]; then
   alias Gb='git branch'
   alias Gi='git remote -v && echo "===" && git branch && echo "===" && git status'
 
+
+
+  # source all required files
+
+  if [ -f .bashrc.local ]; then
+    source .bashrc.local
+  fi
+  if [ -f git-completion.bash ]; then
+    source git-completion.bash
+  fi
 fi
