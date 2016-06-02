@@ -56,6 +56,7 @@ if [ "$PS1" ]; then
   alias vl='ls --color=auto --format=long'
   alias ll='ls -alGh --color=auto --format=long'
   alias la='ls -lash --color=auto --format=long'
+  alias cls='clear'
 
   alias psa='pstree -aAl'
 
