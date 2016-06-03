@@ -26,11 +26,15 @@ set laststatus=2
 set cmdheight=2
 set encoding=utf-8
 
+" Vim splits to the right and below
+set splitbelow
+set splitright
+
 "Pathogen
 execute pathogen#infect()
 
 " NerdTree
-let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=0
 map <F2> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows=0
 
@@ -62,4 +66,12 @@ set statusline+=%{gutentags#statusline()}
 set mouse=a
 
 "====== Custom Mappings ====================
+
+" navigate ctags
 nnoremap ü <C-]>
+
+" navigate panes
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
