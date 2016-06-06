@@ -171,10 +171,14 @@ if [ "$PS1" ]; then
 
   # source all required files
 
-  if [ -f .bashrc.local ]; then
-    source .bashrc.local
+  dotfiles_bash_dir=$(dirname $(readlink -f "$(pwd -P)/.bashrc"))
+
+  if [ -f "$dotfiles_bash_dir/.bashrc.local" ]; then
+    source "$dotfiles_bash_dir/.bashrc.local"
   fi
-  if [ -f git-completion.bash ]; then
-    source git-completion.bash
-  fi
+
+  for f in $(find $dotfiles_bash_dir/completion -type f); do
+    source $f
+  done
+
 fi
