@@ -22,9 +22,16 @@ set ignorecase
 set smartcase
 set hlsearch
 set nowrap
-set laststatus=2
+set laststatus=2 "display always status line
 set cmdheight=2
 set encoding=utf-8
+
+"Status Line
+set statusline=%f         " Path to the file
+set statusline+=%=        " Switch to the right side
+set statusline+=%l        " Current line
+set statusline+=/         " Separator
+set statusline+=%L        " Total lines
 
 " Vim splits to the right and below
 set splitbelow
