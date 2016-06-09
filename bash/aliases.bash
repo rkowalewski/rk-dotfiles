@@ -47,6 +47,9 @@ alias nocolor="sed 's/\x1b\[[0-9;]*m//g'"
 
 # Git aliases
 alias Gr='git remote -v'
+alias Ga='git add'
+alias Gp='git push'
+alias Gc='git commit'
 alias Gs='git status'
 alias Gb='git branch'
 alias Gi='git remote -v && echo "===" && git branch && echo "===" && git status'
