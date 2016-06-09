@@ -31,6 +31,13 @@ set splitbelow
 set splitright
 
 "Pathogen
+let g:pathogen_disabled = []
+" vim-gutentags plugin requires at least version 7.4
+if v:version < '704'
+  call add(g:pathogen_disabled, 'vim-gutentags')
+endif
+
+
 execute pathogen#infect()
 
 " NerdTree
@@ -58,9 +65,9 @@ colorscheme solarized
 " spell
 set spell spelllang=en_us
 
-"Gutentags
-:call pathogen#helptags() 
-set statusline+=%{gutentags#statusline()}
+" Gutentags
+" :call pathogen#helptags() 
+" set statusline+=%{gutentags#statusline()}
 
 " ================== Mouse works inside VIM ==============
 set mouse=a
