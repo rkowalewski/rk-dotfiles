@@ -57,14 +57,51 @@ if [ "$PS1" ]; then
         then echo "[$EXIT_CODE]"
       fi
   }
+
+  function __name_and_server {
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+      echo "`whoami`@`hostname -s`"
+    fi
+  }
+
+  function __git_prompt {
+    GIT_PS1_SHOWDIRTYSTATE=1
+    [ `git config user.pair` ] && GIT_PS1_PAIR="`git config user.pair`@"
+    __git_ps1 "($GIT_PS1_PAIR%s)" | sed 's/ \([+*]\{1,\}\)$/\1/'
+  }
+
   function codemode
   {
       PS1='\[\033[0;32m\]\[\033[0;31m\]$(exitcode)\[\033[0;36m\](\W) \[\033[0;37m\]$\[\033[0m\] ';
   }
   function normmode
   {
-      PS1='\[\033[0;32m\]$HOSTNAME \[\033[0;33m\]$(exitcode)\[\033[0;36m\]$(pwd) \[\033[0;37m\]$\[\033[0m\] '
+    # regular colors
+    local K="\[\033[0;30m\]"    # black
+    local R="\[\033[0;31m\]"    # red
+    local G="\[\033[0;32m\]"    # green
+    local Y="\[\033[0;33m\]"    # yellow
+    local B="\[\033[0;34m\]"    # blue
+    local M="\[\033[0;35m\]"    # magenta
+    local C="\[\033[0;36m\]"    # cyan
+    local W="\[\033[0;37m\]"    # white
+
+    # emphasized (bolded) colors
+    local BK="\[\033[1;30m\]"
+    local BR="\[\033[1;31m\]"
+    local BG="\[\033[1;32m\]"
+    local BY="\[\033[1;33m\]"
+    local BB="\[\033[1;34m\]"
+    local BM="\[\033[1;35m\]"
+    local BC="\[\033[1;36m\]"
+    local BW="\[\033[1;37m\]"
+
+    # reset
+    local RESET="\[\033[0;0m\]"
+
+    PS1="$B\$(__name_and_server) $Y\w \$(__git_prompt) $W$ $RESET"
   }
+
   normmode
 
 
@@ -121,7 +158,7 @@ if [ "$PS1" ]; then
 
   # source all required files
 
-  dotfiles_bash_dir=$(dirname $(readlink -f "$(pwd -P)/.bashrc"))
+  dotfiles_bash_dir=$(dirname $(readlink -f "${HOME}/.bashrc"))
 
   if [ -f "$dotfiles_bash_dir/.bashrc.local" ]; then
     source "$dotfiles_bash_dir/.bashrc.local"
