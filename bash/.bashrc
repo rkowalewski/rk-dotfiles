@@ -70,11 +70,8 @@ if [ "$PS1" ]; then
     __git_ps1 "($GIT_PS1_PAIR%s)" | sed 's/ \([+*]\{1,\}\)$/\1/'
   }
 
-  function codemode
-  {
-      PS1='\[\033[0;32m\]\[\033[0;31m\]$(exitcode)\[\033[0;36m\](\W) \[\033[0;37m\]$\[\033[0m\] ';
-  }
-  function normmode
+
+  function bash_prompt
   {
     # regular colors
     local K="\[\033[0;30m\]"    # black
@@ -98,12 +95,27 @@ if [ "$PS1" ]; then
 
     # reset
     local RESET="\[\033[0;0m\]"
+    norm="norm"
 
-    PS1="$B\$(__name_and_server) $Y\w \$(__git_prompt) $W$ $RESET"
+    if [ "$1" -eq "1" ]; then
+      echo "switching to norm"
+      PS1="$B\$(__name_and_server) $Y\w \$(__git_prompt) $W$ $RESET";
+    elif [ "$1" -eq "2" ]; then
+      echo "switching to code"
+      PS1="$Y\W \$(__git_prompt) $W$ $RESET";
+    fi
+  }
+
+  function codemode
+  {
+    bash_prompt 2
+  }
+  function normmode
+  {
+    bash_prompt 1
   }
 
   normmode
-
 
   function gdiff() {
       git diff --no-ext-diff
