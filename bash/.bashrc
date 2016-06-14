@@ -95,13 +95,10 @@ if [ "$PS1" ]; then
 
     # reset
     local RESET="\[\033[0;0m\]"
-    norm="norm"
 
     if [ "$1" -eq "1" ]; then
-      echo "switching to norm"
       PS1="$B\$(__name_and_server) $Y\w \$(__git_prompt) $W$ $RESET";
     elif [ "$1" -eq "2" ]; then
-      echo "switching to code"
       PS1="$Y\W \$(__git_prompt) $W$ $RESET";
     fi
   }
