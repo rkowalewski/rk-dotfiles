@@ -31,6 +31,11 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias dmesg='dmesg --color'
 
+# if colordiff is installed, use it
+if type colordiff &>/dev/null; then
+  alias diff=colordiff
+fi
+
 # Redirect make output to less
 function lmake {
   make 2>&1 | less
