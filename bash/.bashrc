@@ -170,15 +170,15 @@ if [ "$PS1" ]; then
 
   dotfiles_bash_dir=$(dirname $(readlink -f "${HOME}/.bashrc"))
 
-  if [ -f "$dotfiles_bash_dir/.bashrc.local" ]; then
-    source "$dotfiles_bash_dir/.bashrc.local"
-  fi
-
   for f in $(find $dotfiles_bash_dir/completion -type f); do
     source $f
   done
 
   if [ -f "$dotfiles_bash_dir/aliases.bash" ]; then
     source "$dotfiles_bash_dir/aliases.bash"
+  fi
+
+  if [ -f "$HOME/.bashrc.local" ]; then
+    source "$HOME/.bashrc.local"
   fi
 fi
