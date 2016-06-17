@@ -25,9 +25,11 @@ if [ "$PS1" ]; then
         ;;
       esac
   fi
-  # Turn on checkwinsize
+  # Bash won't get SIGWINCH if another process is in the foreground.
+  # Enable checkwinsize so that bash will check the terminal size when
+  # it regains control.
+  # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
   shopt -s checkwinsize
-  [ "$PS1" = "\\s-\\v\\\$ " ] && PS1="[\u@\h \W]\\$ "
 
   export HOSTALIASES=~/.hosts
 
@@ -163,7 +165,6 @@ if [ "$PS1" ]; then
 
   alias cm='codemode'
   alias nm='normmode'
-
 
   # source all required files
 
