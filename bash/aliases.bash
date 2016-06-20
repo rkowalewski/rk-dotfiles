@@ -56,3 +56,9 @@ alias Gs='git status'
 alias Gb='git branch'
 alias Gi='git remote -v && echo "===" && git branch && echo "===" && git status'
 
+alias tmux='tmux -2'
+
+
+# clang
+alias clang='clang-3.6'
+alias clang-format='clang-format-3.6'

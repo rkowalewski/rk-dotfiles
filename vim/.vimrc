@@ -49,11 +49,11 @@ execute pathogen#infect()
 
 " NerdTree
 let g:nerdtree_tabs_open_on_console_startup=0
-map <F2> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows=0
+map <F2> :NERDTreeToggle<CR>
 
 " astyle AutoFormat
-map <F3> :%!astyle -s2<CR>
+map <F3> :%!astyle --style=stroustrup -j -H -p -s2 -k2 -W2 -xC79 -xL -z2 -Y -m0<CR>
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -64,6 +64,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+:let g:syntastic_loc_list_height=5
 
 "vim-colors-solarized
 set background=dark
