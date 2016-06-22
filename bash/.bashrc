@@ -163,9 +163,6 @@ if [ "$PS1" ]; then
   fi
 
 
-  alias cm='codemode'
-  alias nm='normmode'
-
   # source all required files
 
   dotfiles_bash_dir=$(dirname $(readlink -f "${HOME}/.bashrc"))

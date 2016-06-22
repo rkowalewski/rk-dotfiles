@@ -62,3 +62,7 @@ alias tmux='tmux -2'
 # clang
 alias clang='clang-3.6'
 alias clang-format='clang-format-3.6'
+
+
+alias cm='codemode'
+alias nm='normmode'
