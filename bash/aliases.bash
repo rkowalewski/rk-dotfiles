@@ -11,14 +11,6 @@ alias nocolor="sed 's/\x1b\[[0-9;]*m//g'"
 
 # Aliases and utils -------------------------------------------------------
 
-if type -P dircolors >/dev/null ; then
-  if [[ -f ~/.dir_colors ]] ; then
-    eval $(dircolors -b ~/.dir_colors)
-  elif [[ -f /etc/DIR_COLORS ]] ; then
-    eval $(dircolors -b /etc/DIR_COLORS)
-  fi
-fi
-
 alias ls='ls --color=auto'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
@@ -38,7 +30,7 @@ fi
 
 # Redirect make output to less
 function lmake {
-  make 2>&1 | less
+  script -c "make $@ 2>&1" /dev/null < /dev/null |& less -R
 }
 
 # Add an "alert" alias for long running commands.  Use like so:

@@ -162,19 +162,37 @@ if [ "$PS1" ]; then
     fi
   fi
 
+# LS COLORS -------------------------------------------------------------------
 
-  # source all required files
+  if type -P dircolors >/dev/null ; then
+    if [[ -f ~/.dircolors ]] ; then
+      eval $(dircolors -b ~/.dircolors)
+    elif [[ -f /etc/DIR_COLORS ]] ; then
+      eval $(dircolors -b /etc/DIR_COLORS)
+    fi
+  fi
+
+
+# OTHER BASH STUFF LIKE ALIASES, ADDONS, ETC ------------------------------------
 
   dotfiles_bash_dir=$(dirname $(readlink -f "${HOME}/.bashrc"))
 
+  # Completion
   for f in $(find $dotfiles_bash_dir/completion -type f); do
     source $f
   done
 
+  # Aliases
   if [ -f "$dotfiles_bash_dir/aliases.bash" ]; then
     source "$dotfiles_bash_dir/aliases.bash"
   fi
 
+  # Completion
+  for f in $(find $dotfiles_bash_dir/config -type f); do
+    source $f
+  done
+
+  # Local bashrc
   if [ -f "$HOME/.bashrc.local" ]; then
     source "$HOME/.bashrc.local"
   fi

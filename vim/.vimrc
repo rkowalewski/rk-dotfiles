@@ -27,11 +27,11 @@ set cmdheight=2
 set encoding=utf-8
 
 "Status Line
-set statusline=%f         " Path to the file
-set statusline+=%=        " Switch to the right side
-set statusline+=%l        " Current line
-set statusline+=/         " Separator
-set statusline+=%L        " Total lines
+"set statusline=%f         " Path to the file
+"set statusline+=%=        " Switch to the right side
+"set statusline+=%l        " Current line
+"set statusline+=/         " Separator
+"set statusline+=%L        " Total lines
 
 " Vim splits to the right and below
 set splitbelow
@@ -64,7 +64,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=5
+let g:syntastic_loc_list_height=3
 
 "vim-colors-solarized
 set background=dark
@@ -74,8 +74,10 @@ colorscheme solarized
 set spell spelllang=en_us
 
 " Gutentags
-" :call pathogen#helptags() 
+" :call pathogen#helptags()
 " set statusline+=%{gutentags#statusline()}
+
+let g:airline_powerline_fonts = 0
 
 " ================== Mouse works inside VIM ==============
 set mouse=a
