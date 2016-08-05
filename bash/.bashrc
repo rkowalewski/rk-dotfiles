@@ -166,9 +166,9 @@ if [ "$PS1" ]; then
 
   if type -P dircolors >/dev/null ; then
     if [[ -f ~/.dircolors ]] ; then
-      eval $(dircolors -b ~/.dircolors)
+      eval "$(dircolors -b ~/.dircolors)"
     elif [[ -f /etc/DIR_COLORS ]] ; then
-      eval $(dircolors -b /etc/DIR_COLORS)
+      eval "$(dircolors -b /etc/DIR_COLORS)"
     fi
   fi
 
