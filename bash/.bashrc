@@ -4,34 +4,13 @@
 
 # If running interactively, then:
 if [ "$PS1" ]; then
-  if [ -z "$PROMPT_COMMAND" ]; then
-    case $TERM in
-    xterm*)
-        if [ -e /etc/sysconfig/bash-prompt-xterm ]; then
-            PROMPT_COMMAND=/etc/sysconfig/bash-prompt-xterm
-        else
-            PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
-        fi
-        ;;
-    screen)
-        if [ -e /etc/sysconfig/bash-prompt-screen ]; then
-            PROMPT_COMMAND=/etc/sysconfig/bash-prompt-screen
-        else
-            PROMPT_COMMAND='printf "\033]0;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}"'
-        fi
-        ;;
-    *)
-        [ -e /etc/sysconfig/bash-prompt-default ] && PROMPT_COMMAND=/etc/sysconfig/bash-prompt-default
-        ;;
-      esac
-  fi
-  # Bash won't get SIGWINCH if another process is in the foreground.
-  # Enable checkwinsize so that bash will check the terminal size when
-  # it regains control.
-  # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
-  shopt -s checkwinsize
 
   export HOSTALIASES=~/.hosts
+  if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+    export TERM='xterm-256color'
+  else
+    export TERM='xterm-color'
+  fi
 
   # don't put duplicate lines in the history. See bash(1) for more options
   export HISTCONTROL=ignoreboth
