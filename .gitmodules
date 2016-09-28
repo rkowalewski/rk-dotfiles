@@ -22,6 +22,9 @@
 [submodule "vim/.vim/bundle/vim-airline-themes"]
 	path = vim/.vim/bundle/vim-airline-themes
 	url = git@github.com:vim-airline/vim-airline-themes.git
-[submodule "powerline-fonts"]
-	path = powerline-fonts
-	url = git@github.com:powerline/fonts.git
+[submodule "vim/.vim/bundle/clang_complete"]
+	path = vim/.vim/bundle/clang_complete
+	url = git@github.com:Rip-Rip/clang_complete.git
+[submodule "vim/.vim/bundle/vim-windowswap"]
+	path = vim/.vim/bundle/vim-windowswap
+	url = git@github.com:wesQ3/vim-windowswap.git

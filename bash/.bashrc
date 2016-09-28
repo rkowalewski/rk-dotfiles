@@ -130,7 +130,10 @@ if [ "$PS1" ]; then
   #
   if [ -n "$DISPLAY"  ]; then
     # deactivae Xorg system bell
-    xset b off
+    if command -v xset >/dev/null 2>&1; then
+      xset b off
+    fi
+
     if command -v setxkbmap >/dev/null 2>&1; then
       # no dead keys
       setxkbmap -variant "nodeadkeys"

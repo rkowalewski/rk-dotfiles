@@ -64,7 +64,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=3
+let g:syntastic_loc_list_height = 3
+let g:syntastic_c_check_header= 1
+let g:syntastic_cpp_check_header = 1
 
 "vim-colors-solarized
 set background=dark
@@ -77,7 +79,37 @@ set spell spelllang=en_us
 " :call pathogen#helptags()
 " set statusline+=%{gutentags#statusline()}
 
-let g:airline_powerline_fonts = 0
+" ================== Clang_Complete ==============
+" Clang Complete Settings
+let g:clang_use_library=1
+" if there's an error, allow us to see it
+let g:clang_complete_copen=1
+let g:clang_complete_macros=1
+let g:clang_complete_patterns=0
+" Limit memory use
+let g:clang_memory_percent=70
+" Complete options (disable preview scratch window)
+let g:clang_auto_select=1
+set completeopt=menu,menuone,longest
+" Limit popup menu height
+set pumheight=15
+     
+" SuperTab option for context aware completion
+let g:SuperTabDefaultCompletionType = "context"
+        
+" Disable auto popup, use <Tab> to autocomplete
+" let g:clang_complete_auto = 0
+" Show clang errors in the quickfix window
+let g:clang_complete_copen = 1
+
+set conceallevel=2
+set concealcursor=vin
+let g:clang_snippets=1
+let g:clang_conceal_snippets=1
+" The single one that works with clang_complete
+let g:clang_snippets_engine='clang_complete'
+
+" ================== VIM Airline ========================
 
 " ================== Mouse works inside VIM ==============
 set mouse=a
