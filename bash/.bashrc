@@ -6,11 +6,6 @@
 if [ "$PS1" ]; then
 
   export HOSTALIASES=~/.hosts
-  if [ -e /usr/share/terminfo/x/xterm-256color ]; then
-    export TERM='xterm-256color'
-  else
-    export TERM='xterm-color'
-  fi
 
   # don't put duplicate lines in the history. See bash(1) for more options
   export HISTCONTROL=ignoreboth
@@ -134,10 +129,10 @@ if [ "$PS1" ]; then
       xset b off
     fi
 
-    if command -v setxkbmap >/dev/null 2>&1; then
+    # if command -v setxkbmap >/dev/null 2>&1; then
       # no dead keys
-      setxkbmap -variant "nodeadkeys"
-    fi
+    #  setxkbmap -variant "nodeadkeys"
+    #fi
     # Fix backspace
     if command -v loadkeys >/dev/null 2>&1; then
       echo "keycode 14 = BackSpace" | loadkeys >/dev/null 2>&1
