@@ -28,6 +28,3 @@
 [submodule "vim/.vim/bundle/vim-windowswap"]
 	path = vim/.vim/bundle/vim-windowswap
 	url = git@github.com:wesQ3/vim-windowswap.git
-[submodule "vim/.vim/bundle/tmuxline.vim"]
-	path = vim/.vim/bundle/tmuxline.vim
-	url = git@github.com:edkolev/tmuxline.vim.git
