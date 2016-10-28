@@ -23,61 +23,7 @@ if [ "$PS1" ]; then
 
 # Prompt ------------------------------------------------------------------
 
-
-  PS1='\u@\h:\w\$ '
-
-  function exitcode
-  {
-      EXIT_CODE=$?
-      if [ $EXIT_CODE != 0 ]
-        then echo "[$EXIT_CODE]"
-      fi
-  }
-
-  function __name_and_server {
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-      echo "`whoami`@`hostname -s`"
-    fi
-  }
-
-  function __git_prompt {
-    GIT_PS1_SHOWDIRTYSTATE=1
-    [ `git config user.pair` ] && GIT_PS1_PAIR="`git config user.pair`@"
-    __git_ps1 "($GIT_PS1_PAIR%s)" | sed 's/ \([+*]\{1,\}\)$/\1/'
-  }
-
-
-  function bash_prompt
-  {
-    # regular colors
-    local K="\[\033[0;30m\]"    # black
-    local R="\[\033[0;31m\]"    # red
-    local G="\[\033[0;32m\]"    # green
-    local Y="\[\033[0;33m\]"    # yellow
-    local B="\[\033[0;34m\]"    # blue
-    local M="\[\033[0;35m\]"    # magenta
-    local C="\[\033[0;36m\]"    # cyan
-    local W="\[\033[0;37m\]"    # white
-
-    # emphasized (bolded) colors
-    local BK="\[\033[1;30m\]"
-    local BR="\[\033[1;31m\]"
-    local BG="\[\033[1;32m\]"
-    local BY="\[\033[1;33m\]"
-    local BB="\[\033[1;34m\]"
-    local BM="\[\033[1;35m\]"
-    local BC="\[\033[1;36m\]"
-    local BW="\[\033[1;37m\]"
-
-    # reset
-    local RESET="\[\033[0;0m\]"
-
-    if [ "$1" -eq "1" ]; then
-      PS1="$B\$(__name_and_server) $Y\w \$(__git_prompt) $W$ $RESET";
-    elif [ "$1" -eq "2" ]; then
-      PS1="$Y\W \$(__git_prompt) $W$ $RESET";
-    fi
-  }
+  . $HOME/dotfiles/bash/.bash_prompt
 
   function codemode
   {
@@ -88,11 +34,8 @@ if [ "$PS1" ]; then
     bash_prompt 1
   }
 
-  normmode
+#  normmode
 
-  function gdiff() {
-      git diff --no-ext-diff
-  }
 
 # SSH agent ---------------------------------------------------------------
 

@@ -130,3 +130,16 @@ nnoremap <C-H> <C-W><C-H>
 
 nnoremap <leader>cd :cd %:p:h<CR>
 noremap <leader>pp :echo expand('%:p')<CR>
+
+" Search and replace current word
+:nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+
+"temporarily map arrow keys to nop
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
+
+"map jj to ESC
+inoremap jj <ESC>

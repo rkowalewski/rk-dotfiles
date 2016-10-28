@@ -22,6 +22,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias dmesg='dmesg --color'
+alias less='less -M'
 
 # if colordiff is installed, use it
 if type colordiff &>/dev/null; then
