@@ -165,10 +165,6 @@ let g:syntastic_loc_list_height = 3
 let g:syntastic_c_check_header= 1
 let g:syntastic_cpp_check_header = 1
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ctags
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap ü <C-]>
 
 " ----------------------------------------------------------------------
 " | Automatic Commands                                                 |
@@ -357,6 +353,8 @@ nmap <leader>v :vsp $MYVIMRC<CR>
 
 map <leader>W :w !sudo tee %<CR>
 
+" [,ü ] Navigate to Ctag
+nnoremap ü <C-]>
 
 " ----------------------------------------------------------------------
 " | Status Line                                                        |
