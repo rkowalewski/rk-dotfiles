@@ -1,61 +1,158 @@
-set nu
-set history=700				" Sets how many lines of history VIM has to remember
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("autocmd")
+    " Enable file type detection
+    filetype on
+    filetype plugin on
+    filetype indent on
+    " Treat .json files as .js
+    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+    " Treat .md files as Markdown
+    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+endif
 
-colo delek
-syntax on
-filetype plugin indent on
+" Make Vim more useful
+set nocompatible
+" Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set clipboard=unnamed           " ┐
+                                " │ Use the system clipboard
+if has("unnamedplus")           " │ as the default register.
+    set clipboard+=unnamedplus  " │
+endif                           " ┘
 
-set showmode
+" Enhance command-line completion
+set wildmenu
+" Allow cursor keys in insert mode
+set esckeys
+" Allow backspace in insert mode
+set backspace=indent,eol,start
+" Optimize for fast terminal connections
+set ttyfast
+" Add the g flag to search/replace by default
+set gdefault
+" Use UTF-8 without BOM
+set encoding=utf-8 nobomb
+" Don’t add empty newlines at the end of files
+set binary
+set noeol
 
-set autoindent
-set smartindent
-set backspace=eol,start,indent
+" Don’t create backups when editing files in certain directories
+set backupskip=/tmp/*,/private/tmp/*
 
-set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set ruler
-
+" Respect modeline in files
+set modeline
+set modelines=4
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
+" Enable line numbers
 set number
-set ignorecase
-set smartcase
-set hlsearch
-set nowrap
-set laststatus=2 "display always status line
-set cmdheight=2
-set encoding=utf-8
+" Enable syntax highlighting
+syntax on
+" Highlight current line
+set cursorline
 
-"Status Line
-"set statusline=%f         " Path to the file
-"set statusline+=%=        " Switch to the right side
-"set statusline+=%l        " Current line
-"set statusline+=/         " Separator
-"set statusline+=%L        " Total lines
+" Show “invisible” characters
+" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set lcs=tab:▸\ ,trail:·,nbsp:_
+set list
+" Highlight searches
+set hlsearch
+" Ignore case of searches
+set ignorecase
+" Highlight dynamically as pattern is typed
+set incsearch
+" Always show status line
+set laststatus=2
+" Enable mouse in all modes
+set mouse=a
+" Disable error bells
+set noerrorbells
+" Don’t reset cursor to start of line when moving around.
+set nostartofline
+" Show the cursor position
+set ruler
+" Don’t show the intro message when starting Vim
+set shortmess=atI
+" Show the current mode
+set showmode
+" Show the filename in the window titlebar
+set title
+" Show the (partial) command as it’s being typed
+set showcmd
+
+" Start scrolling three lines before the horizontal window border
+set scrolloff=3
+
+" 1 tab == 4 spaces
+set tabstop=4                  " ┐
+set softtabstop=4              " │ Set global <TAB> settings.
+set shiftwidth=4               " │
+set expandtab                  " ┘
+" Linebreak on 500 characters
+set lbr
+set tw=500
 
 " Vim splits to the right and below
 set splitbelow
 set splitright
 
-"Pathogen
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Turn persistent undo on
+"    means that you can undo even when you close a buffer/VIM
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+try
+    set undodir=~/.vim/undo
+    set undofile
+catch
+endtry
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Pathogen Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use pathogen to inject all plugins
 let g:pathogen_disabled = []
 " vim-gutentags plugin requires at least version 7.4
 if v:version < '704'
-  call add(g:pathogen_disabled, 'vim-gutentags')
-endif
-
-
+   call add(g:pathogen_disabled, 'vim-gutentags')
+   endif
 execute pathogen#infect()
 
-" NerdTree
-let g:nerdtree_tabs_open_on_console_startup=0
-let g:NERDTreeDirArrows=0
-map <F2> :NERDTreeToggle<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Solarzied Colorscheme
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set t_Co=256                   " Enable full-color support.
 
-" astyle AutoFormat
-map <F3> :%!astyle --style=stroustrup -j -H -p -s2 -k2 -W2 -xC79 -xL -z2 -Y -m0<CR>
+" auto detect light or dark background
+let iterm_profile = $ITERM_PROFILE
+if iterm_profile == "light"
+    set background=light
+else
+    set background=dark
+endif
 
-" Syntastic
+if !has("gui_running")
+  let g:solarized_contrast = "high"
+  let g:solarized_termtrans = 1
+  let g:solarized_visibility = "high"
+endif
+
+colorscheme solarized          " Use custom color scheme.
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Syntastic
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -68,78 +165,241 @@ let g:syntastic_loc_list_height = 3
 let g:syntastic_c_check_header= 1
 let g:syntastic_cpp_check_header = 1
 
-"vim-colors-solarized
-set background=dark
-colorscheme solarized
-
-" spell
-set spell spelllang=en_us
-
-" Gutentags
-" :call pathogen#helptags()
-" set statusline+=%{gutentags#statusline()}
-
-" ================== Clang_Complete ==============
-" Clang Complete Settings
-let g:clang_use_library=1
-" if there's an error, allow us to see it
-let g:clang_complete_copen=1
-let g:clang_complete_macros=1
-let g:clang_complete_patterns=0
-" Limit memory use
-let g:clang_memory_percent=70
-" Complete options (disable preview scratch window)
-let g:clang_auto_select=1
-set completeopt=menu,menuone,longest
-" Limit popup menu height
-set pumheight=15
-     
-" SuperTab option for context aware completion
-let g:SuperTabDefaultCompletionType = "context"
-        
-" Disable auto popup, use <Tab> to autocomplete
-" let g:clang_complete_auto = 0
-" Show clang errors in the quickfix window
-let g:clang_complete_copen = 1
-
-set conceallevel=2
-set concealcursor=vin
-let g:clang_snippets=1
-let g:clang_conceal_snippets=1
-" The single one that works with clang_complete
-let g:clang_snippets_engine='clang_complete'
-
-" ================== VIM Airline ========================
-
-" ================== Mouse works inside VIM ==============
-set mouse=a
-
-"====== Custom Mappings ====================
-
-" Map Leader
-let mapleader = ","
-
-" navigate ctags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ctags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap ü <C-]>
 
-" navigate panes
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" ----------------------------------------------------------------------
+" | Automatic Commands                                                 |
+" ----------------------------------------------------------------------
 
-nnoremap <leader>cd :cd %:p:h<CR>
-noremap <leader>pp :echo expand('%:p')<CR>
+if has("autocmd")
+    " Autocommand Groups.
+    " http://learnvimscriptthehardway.stevelosh.com/chapters/14.html
 
-" Search and replace current word
-:nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    " Automatically reload the configurations from
+    " the `~/.vimrc` file whenever they are changed.
+
+    augroup auto_reload_vim_configs
+
+        autocmd!
+        autocmd BufWritePost vimrc source $MYVIMRC
+
+    augroup END
+
+    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    " Use relative line numbers.
+    " http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+
+    augroup relative_line_numbers
+
+        autocmd!
+
+        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        " Automatically switch to absolute
+        " line numbers when Vim loses focus.
+
+        autocmd FocusLost * :set number
+
+        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        " Automatically switch to relative
+        " line numbers when Vim gains focus.
+
+        autocmd FocusGained * :set relativenumber
+
+        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        " Automatically switch to absolute
+        " line numbers when Vim is in insert mode.
+
+        autocmd InsertEnter * :set number
+
+        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        " Automatically switch to relative
+        " line numbers when Vim is in normal mode.
+
+        autocmd InsertLeave * :set relativenumber
 
 
-"temporarily map arrow keys to nop
-noremap <Up> <nop>
-noremap <Down> <nop>
-noremap <Left> <nop>
-noremap <Right> <nop>
+    augroup END
 
-"map jj to ESC
-inoremap jj <ESC>
+    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    " Automatically strip the trailing
+    " whitespaces when files are saved.
+
+    augroup strip_trailing_whitespaces
+
+        " List of file types that use the trailing whitespaces:
+        "
+        "  * Markdown
+        "    https://daringfireball.net/projects/markdown/syntax#block
+
+        let excludedFileTypes = [
+            \ "markdown",
+            \ "mkd.markdown"
+        \]
+
+        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        " Only strip the trailing whitespaces if
+        " the file type is not in the excluded list.
+
+        autocmd!
+        autocmd BufWritePre * if index(excludedFileTypes, &ft) < 0 | :call StripTrailingWhitespaces()
+
+    augroup END
+endif
+
+" ----------------------------------------------------------------------
+" | Helper Functions                                                   |
+" ----------------------------------------------------------------------
+
+function! StripTrailingWhitespaces()
+
+    " Save last search and cursor position.
+
+    let searchHistory = @/
+    let cursorLine = line(".")
+    let cursorColumn = col(".")
+
+    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    " Strip trailing whitespaces.
+
+    %s/\s\+$//e
+
+    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    " Restore previous search history and cursor position.
+
+    let @/ = searchHistory
+    call cursor(cursorLine, cursorColumn)
+
+
+endfunction
+
+function! GetGitBranchName()
+
+    let branchName = ""
+
+    if exists("g:loaded_fugitive")
+        let branchName = "[" . fugitive#head() . "]"
+    endif
+
+    return branchName
+
+endfunction
+
+" ----------------------------------------------------------------------
+" | Key Mappings                                                       |
+" ----------------------------------------------------------------------
+
+" Use a different mapleader (default is "\").
+
+let mapleader = ","
+
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,* ] Search and replace the word under the cursor.
+
+nmap <leader>* :%s/\<<C-r><C-w>\>//<Left>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,cs] Clear search.
+
+map <leader>cs <Esc>:noh<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,l ] Toggle `set list`.
+
+nmap <leader>l :set list!<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,n ] Toggle `set relativenumber`.
+
+nmap <leader>n :call ToggleRelativeLineNumbers()<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,ts] Toggle Syntastic.
+
+nmap <leader>ts :SyntasticToggleMode<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,v ] Make the opening of the `.vimrc` file easier.
+
+nmap <leader>v :vsp $MYVIMRC<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,W ] Sudo write.
+
+map <leader>W :w !sudo tee %<CR>
+
+
+" ----------------------------------------------------------------------
+" | Status Line                                                        |
+" ----------------------------------------------------------------------
+
+set statusline=
+set statusline+=%1*            " User1 highlight
+set statusline+=\ [%n]         " Buffer number
+set statusline+=\ %{GetGitBranchName()}        " Git branch name
+set statusline+=\ [%f]         " File path
+set statusline+=%m             " Modified flag
+set statusline+=%r             " Readonly flag
+set statusline+=%h             " Help file flag
+set statusline+=%w             " Preview window flag
+set statusline+=%y             " File type
+set statusline+=[
+set statusline+=%{&ff}         " File format
+set statusline+=:
+set statusline+=%{strlen(&fenc)?&fenc:'none'}  " File encoding
+set statusline+=]
+set statusline+=%=             " Left/Right separator
+set statusline+=%c             " File encoding
+set statusline+=,
+set statusline+=%l             " Current line number
+set statusline+=/
+set statusline+=%L             " Total number of lines
+set statusline+=\ (%P)\        " Percent through file
+
+" Example result:
+"
+"  [1] [master] [vim/vimrc][vim][unix:utf-8]            17,238/381 (59%)
+
+
+" ----------------------------------------------------------------------
+" | Local Settings                                                     |
+" ----------------------------------------------------------------------
+
+" Load local settings if they exist.
+"
+" [!] The following needs to remain at the end of this file in
+"     order to allow any of the above settings to be overwritten
+"     by the local ones.
+
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
