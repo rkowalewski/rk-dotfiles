@@ -86,9 +86,9 @@ set showcmd
 set scrolloff=3
 
 " 1 tab == 4 spaces
-set tabstop=4                  " ┐
-set softtabstop=4              " │ Set global <TAB> settings.
-set shiftwidth=4               " │
+set tabstop=2                  " ┐
+set softtabstop=2              " │ Set global <TAB> settings.
+set shiftwidth=2               " │
 set expandtab                  " ┘
 " Linebreak on 500 characters
 set lbr
@@ -142,9 +142,9 @@ else
 endif
 
 if !has("gui_running")
-  let g:solarized_contrast = "high"
+  " let g:solarized_contrast = "high"
   let g:solarized_termtrans = 1
-  let g:solarized_visibility = "high"
+  " let g:solarized_visibility = "high"
 endif
 
 colorscheme solarized          " Use custom color scheme.
@@ -153,18 +153,45 @@ colorscheme solarized          " Use custom color scheme.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+if exists('g:loaded_syntastic_plugin')
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_loc_list_height = 3
+  let g:syntastic_c_check_header= 1
+  let g:syntastic_cpp_check_header = 1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height = 3
-let g:syntastic_c_check_header= 1
-let g:syntastic_cpp_check_header = 1
 
+  let g:syntastic_html_checkers = [ "jshint" ]
+  let g:syntastic_javascript_checkers = [ "jshint" ]
+
+" Disable syntax checking by default.
+
+let g:syntastic_mode_map = {
+    \ "active_filetypes": [],
+    \ "mode": "passive",
+    \ "passive_filetypes": []
+\}
+
+endif
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ctags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap ü <C-]>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Airline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:Powerline_symbols = 'fancy'
 
 " ----------------------------------------------------------------------
 " | Automatic Commands                                                 |
@@ -294,6 +321,18 @@ function! GetGitBranchName()
 
 endfunction
 
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function! ToggleRelativeLineNumbers()
+
+    if ( &relativenumber == 1 )
+        set number
+    else
+        set relativenumber
+    endif
+
+endfunction
+
 " ----------------------------------------------------------------------
 " | Key Mappings                                                       |
 " ----------------------------------------------------------------------
@@ -352,40 +391,6 @@ nmap <leader>v :vsp $MYVIMRC<CR>
 " [,W ] Sudo write.
 
 map <leader>W :w !sudo tee %<CR>
-
-" [,ü ] Navigate to Ctag
-nnoremap ü <C-]>
-
-" ----------------------------------------------------------------------
-" | Status Line                                                        |
-" ----------------------------------------------------------------------
-
-set statusline=
-set statusline+=%1*            " User1 highlight
-set statusline+=\ [%n]         " Buffer number
-set statusline+=\ %{GetGitBranchName()}        " Git branch name
-set statusline+=\ [%f]         " File path
-set statusline+=%m             " Modified flag
-set statusline+=%r             " Readonly flag
-set statusline+=%h             " Help file flag
-set statusline+=%w             " Preview window flag
-set statusline+=%y             " File type
-set statusline+=[
-set statusline+=%{&ff}         " File format
-set statusline+=:
-set statusline+=%{strlen(&fenc)?&fenc:'none'}  " File encoding
-set statusline+=]
-set statusline+=%=             " Left/Right separator
-set statusline+=%c             " File encoding
-set statusline+=,
-set statusline+=%l             " Current line number
-set statusline+=/
-set statusline+=%L             " Total number of lines
-set statusline+=\ (%P)\        " Percent through file
-
-" Example result:
-"
-"  [1] [master] [vim/vimrc][vim][unix:utf-8]            17,238/381 (59%)
 
 
 " ----------------------------------------------------------------------
