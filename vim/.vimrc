@@ -1,4 +1,3 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("autocmd")
@@ -181,6 +180,13 @@ endif
 " => Ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap ü <C-]>
+
+if !exists('g:gutentags_exclude_project_root')
+    let g:gutentags_exclude_project_root=[]
+endif
+
+call add(g:gutentags_exclude_project_root, '/home/kowalewski/dotfiles/vim/.vim/bundle/vim-gutentags')
+
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
