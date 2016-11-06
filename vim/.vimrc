@@ -9,6 +9,8 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+    " Folding for C Files
+    autocmd FileType c,cpp setlocal foldmethod=indent
 endif
 
 " Make Vim more useful
@@ -66,6 +68,7 @@ set incsearch
 set laststatus=2
 " Enable mouse in all modes
 set mouse=a
+set ttymouse=xterm2
 " Disable error bells
 set noerrorbells
 " Don’t reset cursor to start of line when moving around.
@@ -155,6 +158,7 @@ colorscheme solarized          " Use custom color scheme.
 if exists('g:loaded_syntastic_plugin')
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
   let g:syntastic_loc_list_height = 3
   let g:syntastic_c_check_header= 1
@@ -166,11 +170,11 @@ if exists('g:loaded_syntastic_plugin')
 
 " Disable syntax checking by default.
 
-let g:syntastic_mode_map = {
-    \ "active_filetypes": [],
-    \ "mode": "passive",
-    \ "passive_filetypes": []
-\}
+"let g:syntastic_mode_map = {
+"    \ "active_filetypes": [],
+"    \ "mode": "passive",
+"    \ "passive_filetypes": []
+"\}
 
 endif
 
@@ -191,6 +195,9 @@ if !exists('g:airline_symbols')
 endif
 
 let g:Powerline_symbols = 'fancy'
+" enable syntastic extension with airline
+let g:airline#extensions#syntastic#enabled=1
+
 
 " ----------------------------------------------------------------------
 " | Automatic Commands                                                 |
@@ -324,10 +331,12 @@ endfunction
 
 function! ToggleRelativeLineNumbers()
 
-    if ( &relativenumber == 1 )
-        set number
-    else
+    if ( &number == 1 )
+        set number!
         set relativenumber
+    else
+        set norelativenumber
+        set number
     endif
 
 endfunction
@@ -384,6 +393,13 @@ nmap <leader>ts :SyntasticToggleMode<CR>
 " [,v ] Make the opening of the `.vimrc` file easier.
 
 nmap <leader>v :vsp $MYVIMRC<CR>
+
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [,v ] Make the opening of the `.vimrc` file easier.
+
+nmap <F4> :TagbarToggle <CR>
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
