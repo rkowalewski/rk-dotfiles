@@ -93,6 +93,16 @@ if [ "$PS1" ]; then
   fi
 
 
+# Tmux and Screen SSH Auth Sockets
+
+_ssh_auth_save() {
+  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh-auth-sock.$HOSTNAME"
+}
+
+alias screen='_ssh_auth_save ; export HOSTNAME=$(hostname) ; screen'
+alias tmux='_ssh_auth_save ; export HOSTNAME=$(hostname) ; tmux -2'
+
+
 # OTHER BASH STUFF LIKE ALIASES, ADDONS, ETC ------------------------------------
 
   dotfiles_bash_dir=$(dirname $(readlink -f "${HOME}/.bashrc"))

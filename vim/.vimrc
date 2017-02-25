@@ -1,26 +1,46 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Pathogen Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible
+
+" Use pathogen to inject all plugins
+let g:pathogen_disabled = []
+" vim-gutentags plugin requires at least version 7.4
+if v:version < '704'
+   call add(g:pathogen_disabled, 'vim-gutentags')
+   endif
+
+execute pathogen#infect()
+
+" Enable file type detection
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("autocmd")
-    " Enable file type detection
-    filetype on
-    filetype plugin on
-    filetype indent on
     " Treat .json files as .js
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    " Folding for C Files
-    autocmd FileType c,cpp setlocal foldmethod=indent
+    " Treat .tex files as tex
+    autocmd BufRead,BufNewFile *.tex set filetype=tex
 endif
 
-" Make Vim more useful
-set nocompatible
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set clipboard=unnamed           " ┐
-                                " │ Use the system clipboard
-if has("unnamedplus")           " │ as the default register.
-    set clipboard+=unnamedplus  " │
-endif                           " ┘
+" However use it only if not running TMUX
+
+if $TMUX == ''
+  set clipboard=unnamed           " ┐
+                                  " │ Use the system clipboard
+  if has("unnamedplus")           " │ as the default register.
+      set clipboard+=unnamedplus  " │
+  endif
+endif
 
 " Enhance command-line completion
 set wildmenu
@@ -30,8 +50,6 @@ set esckeys
 set backspace=indent,eol,start
 " Optimize for fast terminal connections
 set ttyfast
-" Add the g flag to search/replace by default
-set gdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
 " Don’t add empty newlines at the end of files
@@ -54,16 +72,62 @@ syntax on
 " Highlight current line
 set cursorline
 
+" ================ Indentation ======================
+set autoindent
+set smartindent
+set smarttab
+" 1 tab == 2 spaces
+set tabstop=2                  " ┐
+set softtabstop=2              " │ Set global <TAB> settings.
+set shiftwidth=2               " │
+set expandtab                  " ┘
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+"
+"Auto indent pasted text
+"nnoremap p p=`]<C-o>
+"nnoremap P P=`]<C-o>
+
 " Show “invisible” characters
-" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set lcs=tab:▸\ ,trail:·,nbsp:_
-set list
+set list listchars=tab:▸\ ,trail:·,nbsp:_
+
+set nowrap       "Don't wrap lines
+set linebreak    "Wrap lines at convenient points
+
+" " ================ Folds ============================
+
+set foldmethod=indent   "fold based on indent
+set foldnestmax=3       "deepest fold is 3 levels
+set nofoldenable        "dont fold by default
+
+" ================ Scrolling ========================
+
+set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set sidescrolloff=15
+set sidescroll=1
+
+" ============= Formatting of Text ===================
+if executable('par')
+  set formatprg=par\ -w80
+endif
+
+" ================ Search ===========================
+"
+" Highlight dynamically as pattern is typed
+set incsearch
 " Highlight searches
 set hlsearch
 " Ignore case of searches
 set ignorecase
-" Highlight dynamically as pattern is typed
-set incsearch
+" ...unless we type a capital
+set smartcase
+
+" Add the g flag to search/replace by default
+" set gdefault
+
 " Always show status line
 set laststatus=2
 " Enable mouse in all modes
@@ -83,18 +147,6 @@ set showmode
 set title
 " Show the (partial) command as it’s being typed
 set showcmd
-
-" Start scrolling three lines before the horizontal window border
-set scrolloff=3
-
-" 1 tab == 4 spaces
-set tabstop=2                  " ┐
-set softtabstop=2              " │ Set global <TAB> settings.
-set shiftwidth=2               " │
-set expandtab                  " ┘
-" Linebreak on 500 characters
-set lbr
-set tw=500
 
 " Vim splits to the right and below
 set splitbelow
@@ -117,18 +169,6 @@ try
     set undofile
 catch
 endtry
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Pathogen Configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use pathogen to inject all plugins
-let g:pathogen_disabled = []
-" vim-gutentags plugin requires at least version 7.4
-if v:version < '704'
-   call add(g:pathogen_disabled, 'vim-gutentags')
-   endif
-execute pathogen#infect()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Solarzied Colorscheme
@@ -155,31 +195,31 @@ colorscheme solarized          " Use custom color scheme.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if exists('g:loaded_syntastic_plugin')
-  let g:syntastic_always_populate_loc_list = 1
+  "let g:syntastic_always_populate_loc_list = 0
   let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_open = 1
   let g:syntastic_check_on_wq = 0
-  let g:syntastic_loc_list_height = 3
-  let g:syntastic_c_check_header= 1
+  let g:syntastic_loc_list_height = 5
+  let g:syntastic_c_check_header = 1
   let g:syntastic_cpp_check_header = 1
 
-
-  let g:syntastic_html_checkers = [ "jshint" ]
-  let g:syntastic_javascript_checkers = [ "jshint" ]
+"  let g:syntastic_html_checkers = [ "jshint" ]
+"  let g:syntastic_javascript_checkers = [ "jshint" ]
 
 " Disable syntax checking by default.
 
 "let g:syntastic_mode_map = {
-"    \ "active_filetypes": [],
-"    \ "mode": "passive",
+"    \ "active_filetypes": ["c", "cpp"],
+"    \ "mode": "active",
 "    \ "passive_filetypes": []
 "\}
 
-endif
-
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vim Clang Format
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:clang_format#detect_style_file = 1
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -194,8 +234,20 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-let g:Powerline_symbols = 'fancy'
+" let g:Powerline_symbols = 'fancy'
 " enable syntastic extension with airline
+let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+let g:airline#enable#fugitive=1
+let g:airline#enable#syntastic=1
+let g:airline#enable#bufferline=1
+
 let g:airline#extensions#syntastic#enabled=1
 
 
@@ -341,6 +393,54 @@ function! ToggleRelativeLineNumbers()
 
 endfunction
 
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+function! ExpandCMacro()
+  "get current info
+  let l:macro_file_name = "__macroexpand__" . tabpagenr()
+  let l:file_row = line(".")
+  let l:file_name = expand("%")
+  let l:file_window = winnr()
+  "create mark
+  execute "normal! Oint " . l:macro_file_name . ";"
+  execute "w"
+  "open tiny window ... check if we have already an open buffer for macro
+  if bufwinnr( l:macro_file_name ) != -1
+    execute bufwinnr( l:macro_file_name) . "wincmd w"
+    setlocal modifiable
+    execute "normal! ggdG"
+  else
+    execute "bot 10split " . l:macro_file_name
+    execute "setlocal filetype=cpp"
+    execute "setlocal buftype=nofile"
+    nnoremap <buffer> q :q!<CR>
+  endif
+  "read file with gcc
+  silent! execute "r!gcc -E " . l:file_name
+  "keep specific macro line
+  execute "normal! ggV/int " . l:macro_file_name . ";$\<CR>d"
+  execute "normal! jdG"
+  "indent
+  execute "%!indent -st -kr"
+  execute "normal! gg=G"
+  "resize window
+  execute "normal! G"
+  let l:macro_end_row = line(".")
+  execute "resize " . l:macro_end_row
+  execute "normal! gg"
+  "no modifiable
+  setlocal nomodifiable
+  "return to origin place
+  execute l:file_window . "wincmd w"
+  execute l:file_row
+  execute "normal!u"
+  execute "w"
+  "highlight origin line
+  let @/ = getline('.')
+endfunction
+
+
 " ----------------------------------------------------------------------
 " | Key Mappings                                                       |
 " ----------------------------------------------------------------------
@@ -407,6 +507,7 @@ nmap <F4> :TagbarToggle <CR>
 
 map <leader>W :w !sudo tee %<CR>
 
+highlight Cursor guifg=black guibg=white
 
 " ----------------------------------------------------------------------
 " | Local Settings                                                     |

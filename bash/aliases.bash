@@ -49,7 +49,5 @@ alias Gs='git status'
 alias Gb='git branch'
 alias Gi='git remote -v && echo "===" && git branch && echo "===" && git status'
 
-alias tmux='tmux -2'
-
 alias cm='codemode'
 alias nm='normmode'
