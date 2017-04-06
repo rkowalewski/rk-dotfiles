@@ -34,3 +34,6 @@
 [submodule "vim/.vim/bundle/tagbar"]
 	path = vim/.vim/bundle/tagbar
 	url = git@github.com:majutsushi/tagbar.git
+[submodule "vim/.vim/bundle/vim-numbertoggle"]
+	path = vim/.vim/bundle/vim-numbertoggle
+	url = git@github.com:jeffkreeftmeijer/vim-numbertoggle.git

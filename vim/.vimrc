@@ -22,24 +22,23 @@ syntax on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("autocmd")
-    " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-    " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    " Treat .tex files as tex
-    autocmd BufRead,BufNewFile *.tex set filetype=tex
-endif
 
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
 " However use it only if not running TMUX
 
-if $TMUX == ''
+if exists('$TMUX')
+  " allows cursor change in tmux mode
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+
   set clipboard=unnamed           " ┐
                                   " │ Use the system clipboard
   if has("unnamedplus")           " │ as the default register.
       set clipboard+=unnamedplus  " │
   endif
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
 " Enhance command-line completion
@@ -72,6 +71,14 @@ syntax on
 " Highlight current line
 set cursorline
 
+" Show “invisible” characters
+set list listchars=tab:▸\ ,trail:·,nbsp:_
+
+set nowrap       "Don't wrap lines
+set linebreak    "Wrap lines at convenient points
+set tw=78
+
+
 " ================ Indentation ======================
 set autoindent
 set smartindent
@@ -82,26 +89,14 @@ set softtabstop=2              " │ Set global <TAB> settings.
 set shiftwidth=2               " │
 set expandtab                  " ┘
 
-" Linebreak on 500 characters
-set lbr
-set tw=500
 
-"
-"Auto indent pasted text
-"nnoremap p p=`]<C-o>
-"nnoremap P P=`]<C-o>
-
-" Show “invisible” characters
-set list listchars=tab:▸\ ,trail:·,nbsp:_
-
-set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
 
 " " ================ Folds ============================
 
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
+set foldenable        "fold by default
+set foldlevelstart=10   " open most folds by default
 
 " ================ Scrolling ========================
 
@@ -170,6 +165,32 @@ try
 catch
 endtry
 
+augroup configgroup
+  autocmd!
+  autocmd VimEnter * highlight clear SignColumn
+  autocmd FileType java setlocal noexpandtab
+  autocmd FileType java setlocal list
+  autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+  autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+  autocmd FileType ruby setlocal tabstop=2
+  autocmd FileType ruby setlocal shiftwidth=2
+  autocmd FileType ruby setlocal softtabstop=2
+  autocmd FileType ruby setlocal commentstring=#\ %s
+  autocmd FileType python setlocal commentstring=#\ %s
+  autocmd BufEnter *.cls setlocal filetype=java
+  autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+  autocmd BufEnter Makefile setlocal noexpandtab
+  autocmd BufEnter *.sh setlocal tabstop=2
+  autocmd BufEnter *.sh setlocal shiftwidth=2
+  autocmd BufEnter *.sh setlocal softtabstop=2
+  " Treat .json files as .js
+  autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  " Treat .md files as Markdown
+  autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+  " Treat .tex files as tex
+  autocmd BufRead,BufNewFile *.tex set filetype=tex
+augroup END
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Solarzied Colorscheme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -186,6 +207,7 @@ endif
 if !has("gui_running")
   " let g:solarized_contrast = "high"
   let g:solarized_termtrans = 1
+  let g:solarized_termcolors = 256
   " let g:solarized_visibility = "high"
 endif
 
@@ -206,6 +228,7 @@ colorscheme solarized          " Use custom color scheme.
 "  let g:syntastic_html_checkers = [ "jshint" ]
 "  let g:syntastic_javascript_checkers = [ "jshint" ]
 
+  let g:syntastic_debug=0
 " Disable syntax checking by default.
 
 "let g:syntastic_mode_map = {
@@ -268,46 +291,6 @@ if has("autocmd")
 
         autocmd!
         autocmd BufWritePost vimrc source $MYVIMRC
-
-    augroup END
-
-    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    " Use relative line numbers.
-    " http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
-
-    augroup relative_line_numbers
-
-        autocmd!
-
-        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        " Automatically switch to absolute
-        " line numbers when Vim loses focus.
-
-        autocmd FocusLost * :set number
-
-        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        " Automatically switch to relative
-        " line numbers when Vim gains focus.
-
-        autocmd FocusGained * :set relativenumber
-
-        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        " Automatically switch to absolute
-        " line numbers when Vim is in insert mode.
-
-        autocmd InsertEnter * :set number
-
-        " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        " Automatically switch to relative
-        " line numbers when Vim is in normal mode.
-
-        autocmd InsertLeave * :set relativenumber
-
 
     augroup END
 
@@ -379,68 +362,11 @@ function! GetGitBranchName()
 
 endfunction
 
-" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function! ToggleRelativeLineNumbers()
-
-    if ( &number == 1 )
-        set number!
-        set relativenumber
-    else
-        set norelativenumber
-        set number
-    endif
-
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
 endfunction
-
-" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-function! ExpandCMacro()
-  "get current info
-  let l:macro_file_name = "__macroexpand__" . tabpagenr()
-  let l:file_row = line(".")
-  let l:file_name = expand("%")
-  let l:file_window = winnr()
-  "create mark
-  execute "normal! Oint " . l:macro_file_name . ";"
-  execute "w"
-  "open tiny window ... check if we have already an open buffer for macro
-  if bufwinnr( l:macro_file_name ) != -1
-    execute bufwinnr( l:macro_file_name) . "wincmd w"
-    setlocal modifiable
-    execute "normal! ggdG"
-  else
-    execute "bot 10split " . l:macro_file_name
-    execute "setlocal filetype=cpp"
-    execute "setlocal buftype=nofile"
-    nnoremap <buffer> q :q!<CR>
-  endif
-  "read file with gcc
-  silent! execute "r!gcc -E " . l:file_name
-  "keep specific macro line
-  execute "normal! ggV/int " . l:macro_file_name . ";$\<CR>d"
-  execute "normal! jdG"
-  "indent
-  execute "%!indent -st -kr"
-  execute "normal! gg=G"
-  "resize window
-  execute "normal! G"
-  let l:macro_end_row = line(".")
-  execute "resize " . l:macro_end_row
-  execute "normal! gg"
-  "no modifiable
-  setlocal nomodifiable
-  "return to origin place
-  execute l:file_window . "wincmd w"
-  execute l:file_row
-  execute "normal!u"
-  execute "w"
-  "highlight origin line
-  let @/ = getline('.')
-endfunction
-
-
 " ----------------------------------------------------------------------
 " | Key Mappings                                                       |
 " ----------------------------------------------------------------------
@@ -480,7 +406,7 @@ nmap <leader>l :set list!<CR>
 
 " [,n ] Toggle `set relativenumber`.
 
-nmap <leader>n :call ToggleRelativeLineNumbers()<CR>
+let g:NumberToggleTrigger="<leader>n"
 
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -506,6 +432,11 @@ nmap <F4> :TagbarToggle <CR>
 " [,W ] Sudo write.
 
 map <leader>W :w !sudo tee %<CR>
+
+" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+" [@] Apply Macro O@] Apply Macro Over Visual Range
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 highlight Cursor guifg=black guibg=white
 
